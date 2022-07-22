@@ -8,4 +8,9 @@ class Sever:
         self.host = host
         self.port = port
 
-    def send(self):
+    def wait_request(self, massage):
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((self.host, self.port))
+
+        s.listen(3)
