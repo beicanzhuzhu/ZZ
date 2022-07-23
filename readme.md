@@ -1,8 +1,8 @@
-#zz
+# zz
 
 A little chat program
 
-###About how to handle the massages
+### About how to handle the massages
 The server will receive the message from the client and convert the string into a list
 ```
 conn, u_host = s.accept()
