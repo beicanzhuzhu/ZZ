@@ -1,11 +1,11 @@
 # zz
 
-A little chat program
+一个简陋的不能再简陋的聊天程序
 
 ## sever
 
-#### About how to handle the massages
-服务器将从客户端接收消息，并将字符串转换为列表
+#### 如何处理客户端请求
+服务器将从客户端接收请求，并将字符串转换为列表
 ```
 conn, u_host = s.accept()
 request = conn.recv(1024).decode()
