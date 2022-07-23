@@ -23,8 +23,26 @@ massages = request.split(",")
 
     返回[0, zz_id]
 
-+ massges = [1, zz_id, password, ip]
+
++ massages = [1, zz_id, password, ip]
    
   处理登录请求, 查找zz_id并验证password
   
   入果登陆成功就记录下IP地址,并将状态设为 1 (在线)
+
+  成功返回[0]
+
+  密码错误返回[1]
+
+  id不存在返回[2]
+
+
++ massages = [2, zz_id]
+
+  处理好友请求,返回好友列表
+
+  返回[friend_1, friend_2, ... ]
+
+  如无则返回[]
+
+
