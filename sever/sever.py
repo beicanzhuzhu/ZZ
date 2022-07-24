@@ -39,14 +39,33 @@ class Sever:
             print("来自 ", port, " 的链接 : [", request, "]")
             # 将消息分割为列表
             massages = request.split(",")
+            
             # 开始处理消息
-            # 首位为 0 处理注册消息
+            
+            # 注册
+            # [0, user_name, password, ip]
             if massages[0] == "0":
-                # [0, user_name, password, ip]
                 zz_id = str(self.__zz_id)
                 with open("users.json", "r") as u:
                     a = json.load(u)
                     a.append({"name": massages[1], "zz_id": zz_id, "password": massages[2]})
+                    
+            # 登陆
+            # [1, zz_id, password, ip]
+            elif massages[0] == "1":
+                pass
+            
+            # 添加好友
+            # [2, zz_id_1, zz_id_2]
+            elif massages[0] == "2":
+                pass
+            
+            # 获取好友列表
+            # [3, zz_id]
+            elif massages[0] == "3":
+                pass
+                
+                 
 
     def wait_handle_request(self):
 
@@ -58,3 +77,4 @@ class Sever:
             # 守护线程
             thread.setDaemon(True)
             thread.start()
+
