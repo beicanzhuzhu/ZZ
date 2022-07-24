@@ -39,10 +39,10 @@ massages = request.split(",")
 
 + massages = [0, user_name, password, ip]
    
-    >注册   
-    >为用户分配一个5位唯一ZZ ID号码
-    >将zz_id, user_name, password, ip 记录在服务器
-    >将用户状态设为 1 (在线)
+    >注册  
+    >为用户分配一个5位唯一ZZ ID号码  
+    >将zz_id, user_name, password, ip 记录在服务器  
+    >将用户状态设为 1 (在线)  
     >返回[0, zz_id]
 
 + massages = [1, zz_id, password, ip]
