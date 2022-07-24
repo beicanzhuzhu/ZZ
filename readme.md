@@ -26,9 +26,6 @@ if not request:
     break
 ```
 
-#### <a id = friend>发送好友请求<a/>
-
-
 #### 处理用户端请求
 服务器将从用户端接收请求，并将字符串转换为列表
 ```
@@ -47,8 +44,7 @@ massages = request.split(",")
 
 + massages = [1, zz_id, password, ip]
    
-  >登录
-  
+    >登录
     >查找zz_id并验证password  
     >入果登陆成功就记录下IP地址,并将状态设为 1 (在线)  
     >成功返回[0]  
@@ -69,4 +65,4 @@ massages = request.split(",")
     >返回[friend_1, friend_2, ... ]  
     >如无则返回[]
 
-
+#### <a id = friend>发送好友请求<a/>
