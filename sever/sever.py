@@ -34,6 +34,7 @@ class Sever:
             if not request:
                 print(port, "已断开连接")
                 # 将用户状态设为 0 (下线)
+                break
             # 打印有关消息
             print("来自 ", port, " 的链接 : [", request, "]")
             # 将消息分割为列表
