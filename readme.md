@@ -26,7 +26,7 @@ if not request:
     break
 ```
 
-#### <a id = friend>j<a/>
+#### <a id = friend>发送好友请求<a/>
 
 
 #### 处理用户端请求
