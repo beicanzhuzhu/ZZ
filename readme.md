@@ -65,4 +65,4 @@ massages = request.split(",")
     >返回[friend_1, friend_2, ... ]  
     >如无则返回[]
 
-#### <a id = friend>发送好友请求<a/>
+#### <a id = "friend" >发送好友请求<a/>
