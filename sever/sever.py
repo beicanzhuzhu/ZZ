@@ -2,13 +2,16 @@
 import random
 import socket
 import json
+import threading
 
 
 class Sever:
 
     def __init__(self, host, port):
-        self.host = host
-        self.port = port
+
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.bind((host, port))
+        self.s.listen(3)
 
     @property
     def __zz_id(self):
@@ -18,25 +21,31 @@ class Sever:
 
         for i in range(0, 5):
             __id[i] = random.randint(1, 9)
+
         return __id
 
+    def handle_request(self, conn, port):
+
+        while True:
+
+            request = conn.recv(1024).decode()
+
+            print("来自 ", port, " 的链接 : [", request, "]")
+
+            massages = request.split(",")
+
+            if massages[0] == "0":
+
+                id = str(self.__zz_id)
+
+                with open("users.json", "r") as u:
+                    a = json.load(u)
+
     def wait_handle_request(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind((self.host, self.port))
 
-        s.listen(3)
+        while True:
+            conn, port = self.s.accept()
 
-        conn, u_host = s.accept()
-        request = conn.recv(1024).decode()
-
-        print("来自 ", u_host, " 的链接 : [", request, "]")
-
-        massages = request.split(",")
-
-        if massages[0] == "0":
-            id = str(self.__zz_id)
-
-            with open("users.json", "r") as u:
-                a = json.load(u)
-
-
+            thread = threading.Thread(target=self.handle_request, args=(conn, port))
+            thread.setDaemon(True)
+            thread.start()
