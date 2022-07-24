@@ -47,7 +47,7 @@ massages = request.split(",")
 
 + massages = [1, zz_id, password, ip]
    
-  登录
+  >登录
   
     >查找zz_id并验证password  
     >入果登陆成功就记录下IP地址,并将状态设为 1 (在线)  
