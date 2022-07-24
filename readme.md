@@ -2,12 +2,33 @@
 
 一个简陋的不能再简陋的聊天程序
 
-## sever
+## sever.py
 
-#### 如何处理客户端请求
-服务器将从客户端接收请求，并将字符串转换为列表
+#### 处理多个用户
+
+每接入一个连接就新开一个线程处理，然后等待新的连接
 ```
-conn, u_host = s.accept()
+while True:
+    conn, port = self.s.accept()
+    thread = threading.Thread(target=self.__handle_request, args=(conn, port))
+    thread.setDaemon(True)
+    thread.start()
+```
+
+#### 处理下线
+
+如果接收消息为空(false) 将用户状态设为 0 (下线) 结束线程
+```
+request = conn.recv(1024).decode()
+if not request:
+    print(port, "已断开连接")
+    # 将用户状态设为 0 (下线)
+    break
+```
+
+#### 处理用户端请求
+服务器将从用户端接收请求，并将字符串转换为列表
+```
 request = conn.recv(1024).decode()
 massages = request.split(",")
 ```
