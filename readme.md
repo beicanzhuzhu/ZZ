@@ -26,7 +26,7 @@ if not request:
     break
 ```
 
-#### 发送好友请求
+#### <a id = friend>j<a/>
 
 
 #### 处理用户端请求
@@ -39,16 +39,11 @@ massages = request.split(",")
 
 + massages = [0, user_name, password, ip]
    
-    >注册
-    
+    >注册   
     >为用户分配一个5位唯一ZZ ID号码
-    
     >将zz_id, user_name, password, ip 记录在服务器
-  
     >将用户状态设为 1 (在线)
-
     >返回[0, zz_id]
-
 
 + massages = [1, zz_id, password, ip]
    
@@ -68,7 +63,7 @@ massages = request.split(",")
   
   添加好友
   
-  zz_id_2 存在就向指定用户发送好友请求并返回[1]
+  zz_id_2 存在就向指定用户[发送好友请求](#friend)并返回[1]
   
   zz_id_2 不存在就返回[0]
   
