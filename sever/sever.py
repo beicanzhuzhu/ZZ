@@ -14,7 +14,10 @@ class Sever:
         self._s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._s.bind((host, port))
         self._s.listen(5)
+        # 连接列表 [{"zz_id": zz_id, "conn": conn}, ...]
         self._conns = []
+        # 代办列表 [{"zz_id": zz_id, "matter": [...]}, ...]
+        self._to_do_list = []
 
     @property
     def _zz_id(self):  # 还需修改，防止重复
@@ -33,6 +36,7 @@ class Sever:
         for i in self._conns:
             if i["zz_id"] == zz_id_2:  # 在线
                 i["conn"].send(",".join(["0", zz_id_1, massage]).encode())
+        self._to_do_list.append({"zz_id": zz_id_1, "matter": [0, zz_id_1, zz_id_2, massage]})
 
     def _send_friend_request(self, zz_id_1, name, zz_id_2):
         """
@@ -46,6 +50,7 @@ class Sever:
         for i in self._conns:
             if i["zz_id"] == zz_id_2:  # 在线
                 i["conn"].send(",".join(["1", zz_id_1, name]).encode())
+        self._to_do_list.append({"zz_id": zz_id_1, "matter": [0, zz_id_1, name, zz_id_2]})
 
     def _handle_request(self, conn, port):
         """
