@@ -1,4 +1,5 @@
 # zz sever-side
+
 from random import randint
 import socket
 import json
@@ -10,17 +11,49 @@ class Sever:
     def __init__(self, host, port):
 
         # 初始化服务器
-        self.__s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.__s.bind((host, port))
-        self.__s.listen(3)
-        self.__conns = []
+        self._s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._s.bind((host, port))
+        self._s.listen(5)
+        self._conns = []
 
     @property
-    def __zz_id(self):  # 还需修改，防止重复
+    def _zz_id(self):  # 还需修改，防止重复
         # 生成新zz_id
         return randint(10000, 99999)
 
-    def __handle_request(self, conn, port):
+    def _send_massage(self, zz_id_1, zz_id_2, massage):
+        """
+        发送消息,对方不在线则加入代办列表
+        :param zz_id_1: 发送用户的zz_id
+        :param zz_id_2: 被发送用户的zz_id
+        :param massage: 发送的消息
+        :return: None
+        """
+        # 查询是否在线
+        for i in self._conns:
+            if i["zz_id"] == zz_id_2:  # 在线
+                i["conn"].send(",".join(["0", zz_id_1, massage]).encode())
+
+    def _send_friend_request(self, zz_id_1, name, zz_id_2):
+        """
+        发送好友申请请求,不在线则加入代办列表
+        :param zz_id_1: 请求用户的zz_id
+        :param name: 请求用户的昵称
+        :param zz_id_2: 被请求用户的zz_id
+        :return: None
+        """
+        # 查询是否在线
+        for i in self._conns:
+            if i["zz_id"] == zz_id_2:  # 在线
+                i["conn"].send(",".join(["1", zz_id_1, name]).encode())
+
+    def _handle_request(self, conn, port):
+        """
+        处理用户端发送的消息
+        :param conn: 对应用户连接实例
+        :param port: 对应用户地址
+        :return: None
+        """
 
         print(port, "已连接")
 
@@ -40,18 +73,18 @@ class Sever:
             # 开始处理消息
 
             # 先将用户加入连接列表
-            if massages[0] != 0 and {"zz_id": massages[1], "conn": conn} not in self.__conns:
-                self.__conns.append({"zz_id": massages[1], "conn": conn})
+            if massages[0] != 0 and {"zz_id": massages[1], "conn": conn} not in self._conns:
+                self._conns.append({"zz_id": massages[1], "conn": conn})
 
             # 注册
             # [0, user_name, password, ip]
             if massages[0] == "0":
-                zz_id = str(self.__zz_id)
+                zz_id = str(self._zz_id)
                 with open("users.json", "r") as u:
                     a = json.load(u)
                     a.append({"name": massages[1], "zz_id": zz_id, "password": massages[2]})
                 # 将用户加入连接列表
-                self.__conns.append({"zz_id": massages[1], "conn": conn})
+                self._conns.append({"zz_id": massages[1], "conn": conn})
 
             # 登陆
             # [1, zz_id, password, ip]
@@ -74,12 +107,16 @@ class Sever:
                 pass
 
     def start(self):
+        """
+
+        :return: None
+        """
 
         while True:
             # 等待连接
-            conn, port = self.__s.accept()
+            conn, port = self._s.accept()
             # 接收连接并分配线程处理
-            thread = threading.Thread(target=self.__handle_request, args=(conn, port))
+            thread = threading.Thread(target=self._handle_request, args=(conn, port))
             # 守护线程
             thread.daemon = True
             thread.start()
