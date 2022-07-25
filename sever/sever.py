@@ -54,7 +54,6 @@ class Sever:
         :param port: 对应用户地址
         :return: None
         """
-
         print(port, "已连接")
 
         while True:
@@ -108,10 +107,9 @@ class Sever:
 
     def start(self):
         """
-
+        开始启服务器
         :return: None
         """
-
         while True:
             # 等待连接
             conn, port = self._s.accept()
