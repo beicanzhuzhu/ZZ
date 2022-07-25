@@ -1,5 +1,5 @@
 # zz sever-side
-import random
+from random import randint
 import socket
 import json
 import threading
@@ -17,14 +17,8 @@ class Sever:
 
     @property
     def __zz_id(self):  # 还需修改，防止重复
-
         # 生成新zz_id
-        __id = []
-
-        for i in range(0, 5):
-            __id[i] = random.randint(1, 9)
-
-        return __id
+        return randint(10000, 99999)
 
     def __handle_request(self, conn, port):
 
@@ -70,6 +64,11 @@ class Sever:
             # 获取好友列表
             # [3, zz_id]
             elif massages[0] == "3":
+                pass
+
+            # 获取与好友的消息
+            # [4, zz_id_1, zz_id_2]
+            elif massages[0] == "4":
                 pass
 
     def start(self):
