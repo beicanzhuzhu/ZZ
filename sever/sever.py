@@ -105,7 +105,7 @@ class Sever:
             elif massages[0] == "3":
                 pass
 
-            # 获取与好友的消息
+            # 删除好友好友
             # [4, zz_id_1, zz_id_2]
             elif massages[0] == "4":
                 pass
