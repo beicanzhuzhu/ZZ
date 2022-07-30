@@ -14,9 +14,6 @@ class User:
                              "friends": [], "friend_request": [],
                              }
 
-    def _show_main_window(self):
-        pass
-
     def _show_friends(self):
         pass
 
@@ -26,14 +23,30 @@ class User:
     def _show_chat_interface(self):
         pass
 
-    def receive(self):
+    def _receive(self):
         pass
 
-    def log_in(self):
+    def _input(self):
         pass
 
-    def register(self):
+    def _get_input(self):
         pass
+
+    def _log_in(self):
+        pass
+
+    def _register(self):
+        pass
+
+    def start(self):
+
+        while True:
+            print("""
+            welcome to ZZ!!
+            -------------------
+            1.聊天记录
+            2.
+                  """)
 
 
 if __name__ == "__main__":
