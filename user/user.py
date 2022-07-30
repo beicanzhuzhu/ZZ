@@ -24,6 +24,13 @@ class User:
         pass
 
     def _receive(self):
+
+        request = self._s.recv(1024).decode()
+        if not request:
+            self._error(0)
+
+        massages = request.split(",")
+
         pass
 
     def _input(self):
@@ -32,10 +39,7 @@ class User:
     def _get_input(self):
         pass
 
-    def _log_in(self):
-        pass
-
-    def _register(self):
+    def _error(self, error_code):
         pass
 
     def start(self):
@@ -50,4 +54,6 @@ class User:
 
 
 if __name__ == "__main__":
-    pass
+
+    user = User(socket.gethostbyname("56gm316515.goho.co"), 55439)
+    user.start()
