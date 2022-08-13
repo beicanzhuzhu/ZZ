@@ -2,13 +2,23 @@
 
 from random import randint
 import socket
-import json
+import pymysql
 import threading
 
 
 class Sever:
 
-    def __init__(self, host, port):
+    def __init__(self, host, port, m_user, m_password, m_host="localhost", m_port=0):
+        """
+        初始化zz服务器
+
+        :param host: 服务器地址
+        :param port: 服务器监听端口
+        :param m_user: mysql服务器用户
+        :param m_password: MySQL用户密码
+        :param m_host: MySQL服务器地址, 默认为localhost
+        :param m_port: MySQL服务器端口, 默认为3306
+        """
 
         # 初始化服务器
         self._s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,6 +28,20 @@ class Sever:
         self._conns = []
         # 代办列表 [{"zz_id": zz_id, "matter": [...]}, ...]
         self._to_do_list = []
+        # 连接数据库
+        self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port)
+        self._database = self._db.cursor()
+        # 查询zz库是否存在
+        self._database.execute("select * from information_schema.SCHEMATA where SCHEMA_NAME ='zz';")
+        if self._database.fetchone() is None:
+            self._database.execute("create database zz")
+            self._database.execute("use zz")
+            sql = """
+            create table zz
+            (
+            name  varchar(10)
+            );"""
+            self._database.execute(sql)
 
     @property
     def _zz_id(self):  # 还需修改，防止重复
@@ -27,6 +51,7 @@ class Sever:
     def _send_massage(self, zz_id_1, zz_id_2, massage):
         """
         发送消息,对方不在线则加入代办列表
+
         :param zz_id_1: 发送用户的zz_id
         :param zz_id_2: 被发送用户的zz_id
         :param massage: 发送的消息
@@ -41,6 +66,7 @@ class Sever:
     def _send_friend_request(self, zz_id_1, name, zz_id_2):
         """
         发送好友申请请求,不在线则加入代办列表
+
         :param zz_id_1: 请求用户的zz_id
         :param name: 请求用户的昵称
         :param zz_id_2: 被请求用户的zz_id
@@ -55,6 +81,7 @@ class Sever:
     def _handle_request(self, conn, port):
         """
         处理用户端发送的消息
+
         :param conn: 对应用户连接实例
         :param port: 对应用户地址
         :return: None
@@ -84,9 +111,7 @@ class Sever:
             # [0, user_name, password, ip]
             if massages[0] == "0":
                 zz_id = str(self._zz_id)
-                with open("users.json", "r") as u:
-                    a = json.load(u)
-                    a.append({"name": massages[1], "zz_id": zz_id, "password": massages[2]})
+                #
                 # 将用户加入连接列表
                 self._conns.append({"zz_id": massages[1], "conn": conn})
 
@@ -113,6 +138,7 @@ class Sever:
     def start(self):
         """
         开始启服务器
+
         :return: None
         """
         while True:
@@ -126,5 +152,26 @@ class Sever:
 
 
 if __name__ == '__main__':
-    sever = Sever("", 8080)
+    sever = Sever("", 8080, "beicanyuzhuzhu", "070212", "192.168.31.160")
     sever.start()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
