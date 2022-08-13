@@ -32,6 +32,9 @@ char* read()
     return chBuffer;
 }
 /*
+
+来自微软官方文档的演示程序
+
 #include <windows.h>
 
 void NewLine(void);
