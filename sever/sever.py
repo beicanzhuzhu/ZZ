@@ -28,20 +28,38 @@ class Sever:
         self._conns = []
         # 代办列表 [{"zz_id": zz_id, "matter": [...]}, ...]
         self._to_do_list = []
+
         # 连接数据库
-        self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port)
-        self._database = self._db.cursor()
-        # 查询zz库是否存在
-        self._database.execute("select * from information_schema.SCHEMATA where SCHEMA_NAME ='zz';")
-        if self._database.fetchone() is None:
+        try:
+            self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port, database="zz")
+
+        # zz数据库不存在
+        except pymysql.err.OperationalError:
+            self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port)
+            self._database = self._db.cursor()
+            self._database.execute("select * from information_schema.SCHEMATA where SCHEMA_NAME ='zz';")
             self._database.execute("create database zz")
-            self._database.execute("use zz")
+            self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port, database="zz")
+            self._database = self._db.cursor()
             sql = """
-            create table zz
-            (
-            name  varchar(10)
+            create table users(
+            zz_id     int(5) primary key ,
+            name      varchar(25),
+            first_login_time datetime,
+            last_login_time  datetime,
+            is_online        bit(1),
+            friends          varchar
             );"""
+            self._db.commit()
             self._database.execute(sql)
+            sql = """
+            insert into zz.users (zz_id, name, first_login_time, last_login_time, is_online, friends)
+            value 
+            (00001, 'root', NOW(), NOW(), 1, '');"""
+            self._database.execute(sql)
+            self._db.commit()
+
+        self._database = self._db.cursor()
 
     @property
     def _zz_id(self):  # 还需修改，防止重复
