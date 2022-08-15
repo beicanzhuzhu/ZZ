@@ -69,6 +69,8 @@ class Sever:
         else:
             self._database = self._db.cursor()
 
+        print("working...")
+
     @property
     def _zz_id(self):  # 还需修改，防止重复
         # 生成新zz_id
@@ -134,7 +136,7 @@ class Sever:
                 self._conns.append({"zz_id": massages[1], "conn": conn})
 
             # 注册
-            # [0, user_name, password, ip]
+            # [0, user_name, password]
             if massages[0] == "0":
                 zz_id = str(self._zz_id)
                 #
@@ -142,7 +144,7 @@ class Sever:
                 self._conns.append({"zz_id": massages[1], "conn": conn})
 
             # 登陆
-            # [1, zz_id, password, ip]
+            # [1, zz_id, password]
             elif massages[0] == "1":
                 pass
 
