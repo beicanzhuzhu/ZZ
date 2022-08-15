@@ -32,15 +32,21 @@ class Sever:
         # 连接数据库
         try:
             self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port, database="zz")
-
         # zz数据库不存在
         except pymysql.err.OperationalError:
-            self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port)
+
+            try:
+                self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port)
+            # 连接不到服务器
+            except pymysql.err.OperationalError:
+                raise pymysql.err.OperationalError("无法连接到MYSQL服务器,请检查服务器是否打开或依据https://github.com/beicanzhuzhu/ZZ"
+                                                   "配置MYSQL服务器。")
             self._database = self._db.cursor()
-            self._database.execute("select * from information_schema.SCHEMATA where SCHEMA_NAME ='zz';")
             self._database.execute("create database zz")
+            self._db.close()
             self._db = pymysql.connect(user=m_user, password=m_password, host=m_host, port=m_port, database="zz")
             self._database = self._db.cursor()
+            # 创建数据表
             sql = """
             create table users(
             zz_id     int(5) primary key ,
@@ -48,10 +54,11 @@ class Sever:
             first_login_time datetime,
             last_login_time  datetime,
             is_online        bit(1),
-            friends          varchar
+            friends          text
             );"""
             self._db.commit()
             self._database.execute(sql)
+            # 插入root管理员的账户
             sql = """
             insert into zz.users (zz_id, name, first_login_time, last_login_time, is_online, friends)
             value 
@@ -59,7 +66,8 @@ class Sever:
             self._database.execute(sql)
             self._db.commit()
 
-        self._database = self._db.cursor()
+        else:
+            self._database = self._db.cursor()
 
     @property
     def _zz_id(self):  # 还需修改，防止重复
@@ -172,24 +180,3 @@ class Sever:
 if __name__ == '__main__':
     sever = Sever("", 8080, "beicanyuzhuzhu", "070212", "192.168.31.160")
     sever.start()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
