@@ -34,19 +34,19 @@ massages = request.split(",")
 ```
 根据第一个数字确定消息请求的服务
 
-+ massages = [0, user_name, password, ip]
++ massages = [0, user_name, password]
    
     注册  
     为用户分配一个5位唯一ZZ ID号码  
-    将zz_id, user_name, password, ip 记录在服务器  
+    将zz_id, user_name, password记录在服务器  
     将用户状态设为 1 (在线)  
     返回[0, zz_id]
 
-+ massages = [1, zz_id, password, ip]
++ massages = [1, zz_id, password]
    
     登录  
     查找zz_id并验证password  
-    入果登陆成功就记录下IP地址,并将状态设为 1 (在线)  
+    入果登陆成功将状态设为 1 (在线)  
     成功返回[0]  
     密码错误返回[1]  
     id不存在返回[2]
