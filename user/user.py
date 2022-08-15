@@ -14,6 +14,18 @@ class User:
                              "friends": [], "friend_request": [],
                              }
 
+    @staticmethod
+    def _process_the_input(string):
+        # 剔除字符串中所有的空格
+        string = ''.join([i for i in string if i != " "])
+        # 经过如下处理后，合法输入的第一项会是''
+        string = string.split("-")
+        # 如果不是，则输入非法
+        if string[0] != '':
+            return None
+        string.pop(0)
+        return string
+
     def _receive(self):
 
         request = self._s.recv(1024).decode()
@@ -24,9 +36,6 @@ class User:
 
         pass
 
-    def _input(self):
-        pass
-
     def _get_input(self):
         pass
 
@@ -34,6 +43,22 @@ class User:
         pass
 
     def start(self):
+
+        print("Welcome to use zz.")
+        print("Enter -s <zz_id> -p <password> to sign in "
+              "or -r  <name> -p <password> to register")
+        while True:
+            print("zz(" + self._information["name"] + ")->", end="")
+
+            command = input()
+            command = self._process_the_input(command)
+            if command is None:
+                self._error(1)
+            else:
+                break
+
+        if command[0][0] == "s":
+            pass
         a = 6
         while a != 0:
             print("Please enter your zz_id:", end="")
@@ -51,11 +76,6 @@ class User:
         if a == 0:
             print("Too many password errors!!")
 
-
-
-
-
-
         print("""
 Welcome to zz!
 '-p' to change the sever ip.
@@ -69,6 +89,5 @@ Or you can input '-h' to get more help.
 
 
 if __name__ == "__main__":
-
     user = User(socket.gethostbyname("56gm316515.goho.co"), 55439)
     user.start()
