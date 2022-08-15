@@ -14,15 +14,6 @@ class User:
                              "friends": [], "friend_request": [],
                              }
 
-    def _show_friends(self):
-        pass
-
-    def _show_friend_request(self):
-        pass
-
-    def _show_chat_interface(self):
-        pass
-
     def _receive(self):
 
         request = self._s.recv(1024).decode()
@@ -43,14 +34,38 @@ class User:
         pass
 
     def start(self):
+        a = 6
+        while a != 0:
+            print("Please enter your zz_id:", end="")
+            zz_id = input()
+            print("Please enter your password:", end="")
+            password = input()
+            self._s.send(",".join([1, zz_id, password]).encode())
+            if self._s.recv(1024).decode().split(",")[0] == "1":
+                a -= 1
+                print("Password error, please try again.")
+                print("(You have " + str(a) + " times.)")
+            elif self._s.recv(1024).decode().split(",")[0] == "2":
+                print("Can't find the user " + zz_id + ", please try again.")
+
+        if a == 0:
+            print("Too many password errors!!")
+
+
+
+
+
+
+        print("""
+Welcome to zz!
+'-p' to change the sever ip.
+'-t <your friend's name or zz_id>' to chat with your friend  
+Or you can input '-h' to get more help.
+                    """)
 
         while True:
-            print("""
-            welcome to ZZ!!
-            -------------------
-            1.聊天记录
-            2.
-                  """)
+            print("zz(" + self._information["name"] + ")->", end="")
+            common = input()
 
 
 if __name__ == "__main__":
