@@ -54,7 +54,7 @@ massages = request.split(",")
 + massages = [2, zz_id_1, zz_id_2]
   
     添加好友  
-    zz_id_2 存在就向指定用户[发送好友请求](#1)并返回[1]  
+    zz_id_2 存在就向指定用户发送好友请求并返回[1]  
     zz_id_2 不存在就返回[0]
   
 
@@ -64,5 +64,3 @@ massages = request.split(",")
     处理好友请求,返回好友列表  
     返回[friend_1, friend_2, ... ]  
     如无则返回[]
-
-#### <a id="1" >发送好友请求</a>
